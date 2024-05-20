@@ -9,7 +9,16 @@ class DogsController < ApplicationController
       @image_url = nil
       @message = "Breed name cannot be empty. Please enter a valid breed."
     else
-      url = URI("https://dog.ceo/api/breed/#{breed}/images/random")
+      breed_parts = breed.split
+      if breed_parts.size > 1
+        parent_breed = URI.encode_www_form_component(breed_parts[1])
+        sub_breed = URI.encode_www_form_component(breed_parts[0])
+        url = URI("https://dog.ceo/api/breed/#{parent_breed}/#{sub_breed}/images/random")
+      else
+        encoded_breed = URI.encode_www_form_component(breed)
+        url = URI("https://dog.ceo/api/breed/#{encoded_breed}/images/random")
+      end
+
       response = Net::HTTP.get(url)
       data = JSON.parse(response)
 
@@ -37,10 +46,24 @@ class DogsController < ApplicationController
       response = Net::HTTP.get(url)
       data = JSON.parse(response)
 
-      data["status"] == "success" ? data["message"].keys : []
+      data["status"] == "success" ? data["message"] : {}
     end
 
-    @suggestions = @breeds.select { |breed| breed.downcase.starts_with?(params[:query].downcase) }
+    query = params[:query].strip.downcase
+
+    @suggestions = []
+    @breeds.each do |parent, sub_breeds|
+      if parent.start_with?(query)
+        @suggestions << parent
+      end
+
+      sub_breeds.each do |sub_breed|
+        combined_breed = "#{sub_breed} #{parent}"
+        if combined_breed.start_with?(query)
+          @suggestions << combined_breed
+        end
+      end
+    end
 
     respond_to do |format|
       format.turbo_stream

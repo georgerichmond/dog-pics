@@ -86,6 +86,17 @@ class DogsTest < ApplicationSystemTestCase
     assert_selector "img"
   end
 
+  test "entering a breed with a sub breed separated by a space" do
+    visit root_path
+
+    fill_in "Breed", with: "golden retriever"
+    click_on "Submit"
+
+    assert_text "Here's your pic for golden retriever"
+    assert_selector "img"
+  end
+
+
   test "autocomplete suggestions appear when typing breed name" do
     visit root_path
 
