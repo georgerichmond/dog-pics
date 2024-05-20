@@ -31,7 +31,7 @@ class DogsTest < ApplicationSystemTestCase
     assert_selector "h1", text: "Dog Breed Pics"
 
     fill_in "Breed", with: "hound"
-    click_on "Submit"
+    click_on "Get Random Pic"
 
     assert_text "Here's your pic for hound"
     assert_selector "img"
@@ -43,7 +43,7 @@ class DogsTest < ApplicationSystemTestCase
     visit root_path
 
     fill_in "Breed", with: "Corgi"
-    click_on "Submit"
+    click_on "Get Random Pic"
 
     assert_text "Here's your pic for Corgi"
     assert_selector "img"
@@ -56,7 +56,7 @@ class DogsTest < ApplicationSystemTestCase
     visit root_path
 
     fill_in "Breed", with: "Unicorn"
-    click_on "Submit"
+    click_on "Get Random Pic"
 
     assert_text "Unicorn not found. Perhaps try a different breed, like 'Corgi'"
     assert_no_selector "img"
@@ -65,7 +65,7 @@ class DogsTest < ApplicationSystemTestCase
   test "visiting the index and submitting form with empty breed" do
     visit root_path
 
-    click_on "Submit"
+    click_on "Get Random Pic"
 
     assert_text "Breed name cannot be empty. Please enter a valid breed."
     assert_no_selector "img"
@@ -76,7 +76,7 @@ class DogsTest < ApplicationSystemTestCase
     visit root_path
 
     fill_in "Breed", with: "HOUND"
-    click_on "Submit"
+    click_on "Get Random Pic"
 
     assert_text "Here's your pic for HOUND"
     assert_selector "img"
@@ -88,7 +88,7 @@ class DogsTest < ApplicationSystemTestCase
     visit root_path
 
     fill_in "Breed", with: "  hound  "
-    click_on "Submit"
+    click_on "Get Random Pic"
 
     assert_text "Here's your pic for hound"
     assert_selector "img"
@@ -100,7 +100,7 @@ class DogsTest < ApplicationSystemTestCase
     visit root_path
 
     fill_in "Breed", with: "afghan hound"
-    click_on "Submit"
+    click_on "Get Random Pic"
 
     assert_text "Here's your pic for afghan hound"
     assert_selector "img"
@@ -146,7 +146,7 @@ class DogsTest < ApplicationSystemTestCase
     assert_selector "#breed-suggestions li", text: "poodle"
 
     find("#breed-suggestions li", text: "toy poodle").click
-    click_on "Submit"
+    click_on "Get Random Pic"
 
     assert_text "Here's your pic for toy poodle"
     assert_selector "img"

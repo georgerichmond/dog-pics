@@ -8,7 +8,7 @@ random image of that breed from the Dog CEO API.
 
 ## Features
 
-- A web form with a text input field labeled "Breed" and a "Submit" button.
+- A web form with a text input field labeled "Breed" and a Submit button labelled "Get Random Pic".
 - Asynchronous form submission to fetch and display a dog breed image without a full page reload.
 - Autocomplete suggestions for dog breeds as the user types.
 
@@ -28,7 +28,7 @@ random image of that breed from the Dog CEO API.
 
 1. Enter a dog breed name in the "Breed" text field.
 2. As you type, autocomplete suggestions will appear below the input field.
-3. Click on a suggestion or finish typing the breed name and click "Submit".
+3. Click on a suggestion or finish typing the breed name and click "Get Random Pic".
 4. A random image of the specified breed will be fetched from the Dog CEO API and displayed along with the breed name.
 
 ## Running Tests

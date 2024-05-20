@@ -3,7 +3,7 @@
   <%= form_with url: fetch_dog_image_path, local: true, id: 'breed-form', class: "flex items-center w-full relative" do %>
     <%= label_tag :breed, 'Breed', class: "sr-only" %>
     <%= text_field_tag :breed, nil, placeholder: "Enter breed", class: "px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 flex-grow", data: { autocomplete_target: "input", action: "input->autocomplete#suggest" } %>
-    <%= submit_tag 'Submit', class: 'px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ml-2' %>
+    <%= submit_tag 'Get Random Pic', class: 'px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ml-2' %>
     <div id="breed-suggestions" class="absolute top-full left-0 mt-2 w-full"></div>
   <% end %>
   <div id="result" class="mt-10 w-full"></div>
