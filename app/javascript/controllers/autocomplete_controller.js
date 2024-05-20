@@ -1,26 +1,34 @@
 // app/javascript/controllers/autocomplete_controller.js
-import {Controller} from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
     static targets = ["input"]
 
+    connect() {
+        this.debounce = null;
+    }
+
     suggest() {
-        const query = this.inputTarget.value.trim();
+        clearTimeout(this.debounce);
 
-        if (query === "") {
-            document.getElementById("breed-suggestions").innerHTML = "";
-            return;
-        }
+        this.debounce = setTimeout(() => {
+            const query = this.inputTarget.value.trim();
 
-        fetch(`/breeds?query=${encodeURIComponent(query)}`, {
-            headers: {
-                Accept: "text/vnd.turbo-stream.html",
-            },
-        })
-            .then((response) => response.text())
-            .then((html) => {
-                document.getElementById("breed-suggestions").innerHTML = html;
-            });
+            if (query === "") {
+                document.getElementById("breed-suggestions").innerHTML = "";
+                return;
+            }
+
+            fetch(`/breeds?query=${encodeURIComponent(query)}`, {
+                headers: {
+                    Accept: "text/vnd.turbo-stream.html",
+                },
+            })
+                .then((response) => response.text())
+                .then((html) => {
+                    document.getElementById("breed-suggestions").innerHTML = html;
+                });
+        }, 100);
     }
 
     selectSuggestion(event) {

@@ -1,6 +1,27 @@
 require "application_system_test_case"
+require 'webmock/minitest'
 
 class DogsTest < ApplicationSystemTestCase
+
+  setup do
+    WebMock.allow_net_connect!
+    stub_request(:get, "https://dog.ceo/api/breeds/list/all")
+      .to_return(
+        status: 200,
+        body: {
+          "status": "success",
+          "message": {
+            "corgi": [],
+            "hound": [],
+            "poodle": [],
+            "terrier": [],
+            "wolfhound": ["irish"]
+          }
+        }.to_json,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+
+  end
   # Happy Path Tests
   test "visiting the index and submitting form with 'hound'" do
     visit root_path
@@ -63,6 +84,59 @@ class DogsTest < ApplicationSystemTestCase
 
     assert_text "Here's your pic for hound"
     assert_selector "img"
+  end
+
+  test "autocomplete suggestions appear when typing breed name" do
+    visit root_path
+
+    fill_in "Breed", with: "ter"
+    assert_selector "#breed-suggestions li", text: "terrier"
+
+    fill_in "Breed", with: "poo"
+    assert_selector "#breed-suggestions li", text: "poodle"
+  end
+
+  test "autocomplete suggestions disappear when input is cleared" do
+    visit root_path
+
+    fill_in "Breed", with: "ter"
+    assert_selector "#breed-suggestions li", text: "terrier"
+
+    fill_in "Breed", with: ""
+    assert_no_selector "#breed-suggestions li"
+  end
+
+  test "selecting a suggestion from the autocomplete list populates the input field" do
+    visit root_path
+
+    fill_in "Breed", with: "ter"
+    assert_selector "#breed-suggestions li", text: "terrier"
+
+    find("#breed-suggestions li", text: "terrier").click
+    assert_field "Breed", with: "terrier"
+  end
+
+  test "submitting form with a breed selected from autocomplete suggestions" do
+    visit root_path
+
+    fill_in "Breed", with: "poo"
+    assert_selector "#breed-suggestions li", text: "poodle"
+
+    find("#breed-suggestions li", text: "poodle").click
+    click_on "Submit"
+
+    assert_text "Here's your pic for poodle"
+    assert_selector "img"
+  end
+
+  test "entering and then clearing the dog name autocomplete" do
+    visit root_path
+
+    fill_in "Breed", with: "poo"
+    assert_selector "#breed-suggestions li", text: "poodle"
+
+    fill_in "Breed", with: ""
+    assert_no_selector "#breed-suggestions li"
   end
 
 end

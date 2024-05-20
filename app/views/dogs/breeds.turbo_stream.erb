@@ -1,6 +1,6 @@
 <%= turbo_stream.update "breed-suggestions" do %>
   <% if @suggestions.any? %>
-    <ul class="mt-2 divide-y divide-gray-200 border border-gray-300 rounded-md shadow-sm">
+    <ul class="mt-2 divide-y divide-gray-200 border border-gray-300 rounded-md shadow-sm absolute bg-white z-10">
       <% @suggestions.each do |breed| %>
         <li
           class="px-4 py-2 cursor-pointer hover:bg-gray-100 transition duration-200 ease-in-out"

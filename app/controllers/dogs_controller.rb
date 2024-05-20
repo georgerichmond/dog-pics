@@ -32,11 +32,15 @@ class DogsController < ApplicationController
   end
 
   def breeds
-    breeds = [
-      "affenpinscher", "akita", "beagle", "corgi", "dalmatian", "labrador", "poodle", "rottweiler", "shiba", "terrier"
-    ]
+    @breeds = Rails.cache.fetch("breeds", expires_in: 12.hours) do
+      url = URI("https://dog.ceo/api/breeds/list/all")
+      response = Net::HTTP.get(url)
+      data = JSON.parse(response)
 
-    @suggestions = breeds.select { |breed| breed.downcase.start_with?(params[:query].downcase) }
+      data["status"] == "success" ? data["message"].keys : []
+    end
+
+    @suggestions = @breeds.select { |breed| breed.downcase.starts_with?(params[:query].downcase) }
 
     respond_to do |format|
       format.turbo_stream
