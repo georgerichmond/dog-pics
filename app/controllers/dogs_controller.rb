@@ -30,4 +30,16 @@ class DogsController < ApplicationController
       format.html { redirect_to root_path }
     end
   end
+
+  def breeds
+    breeds = [
+      "affenpinscher", "akita", "beagle", "corgi", "dalmatian", "labrador", "poodle", "rottweiler", "shiba", "terrier"
+    ]
+
+    @suggestions = breeds.select { |breed| breed.downcase.start_with?(params[:query].downcase) }
+
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
 end

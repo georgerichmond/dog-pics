@@ -1,9 +1,10 @@
-<div>
+<div data-controller="autocomplete">
   <h1 class="text-2xl font-bold mb-5">Dog Breed Pics</h1>
   <%= form_with url: fetch_dog_image_path, local: true, id: 'breed-form', class: "flex items-center" do %>
     <%= label_tag :breed, 'Breed', class: "sr-only" %>
-    <%= text_field_tag :breed, nil, placeholder: "Enter breed", class: "px-4 py-2 mr-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    <%= text_field_tag :breed, nil, placeholder: "Enter breed", class: "px-4 py-2 mr-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500", data: { autocomplete_target: "input", action: "input->autocomplete#suggest" } %>
     <%= submit_tag 'Submit', class: 'px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500' %>
   <% end %>
+  <div id="breed-suggestions"></div>
   <div id="result"/>
 </div>
