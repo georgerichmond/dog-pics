@@ -59,7 +59,7 @@ class DogsController < ApplicationController
 
       sub_breeds.each do |sub_breed|
         combined_breed = "#{sub_breed} #{parent}"
-        if combined_breed.start_with?(query)
+        if combined_breed.include?(query)
           @suggestions << combined_breed
         end
       end

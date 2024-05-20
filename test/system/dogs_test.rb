@@ -135,7 +135,7 @@ class DogsTest < ApplicationSystemTestCase
     fill_in "Breed", with: "ter"
     assert_selector "#breed-suggestions li", text: "terrier"
 
-    find("#breed-suggestions li", text: "terrier").click
+    first("#breed-suggestions li", text: "terrier" ).click
     assert_field "Breed", with: "terrier"
   end
 
@@ -145,10 +145,10 @@ class DogsTest < ApplicationSystemTestCase
     fill_in "Breed", with: "poo"
     assert_selector "#breed-suggestions li", text: "poodle"
 
-    find("#breed-suggestions li", text: "poodle").click
+    find("#breed-suggestions li", text: "toy poodle").click
     click_on "Submit"
 
-    assert_text "Here's your pic for poodle"
+    assert_text "Here's your pic for toy poodle"
     assert_selector "img"
     img = find("img")[:src]
     assert img.include?("poodle")
@@ -162,5 +162,13 @@ class DogsTest < ApplicationSystemTestCase
 
     fill_in "Breed", with: ""
     assert_no_selector "#breed-suggestions li"
+  end
+
+  test "autocomplete suggestions for 'hound' include 'hound' and 'afghan hound'" do
+    visit root_path
+
+    fill_in "Breed", with: "hound"
+    assert_selector "#breed-suggestions li", text: "hound"
+    assert_selector "#breed-suggestions li", text: "afghan hound"
   end
 end
